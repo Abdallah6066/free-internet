@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>نت بوس - إنترنت مجاني مدى الحياة</title>
+<title>نت بوس - إنترنت مجاني</title>
+<!-- ===== كود إعلانات Adsterra ===== -->
+<script src="https://pl30151475.effectivecpmnetwork.com/e5/ea/12/e5ea1278e87202d209f8cdb5d86d90c0.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -206,6 +208,29 @@
     margin:0 0 20px;
   }
 
+  .country-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-bottom:16px;
+  }
+  .country-opt{
+    background:var(--card);
+    border:2px solid rgba(255,255,255,0.08);
+    border-radius:12px;
+    padding:14px 8px;
+    text-align:center;
+    cursor:pointer;
+    color:var(--text);
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+    font-size:14px;
+    transition:all 0.2s;
+  }
+  .country-opt:hover{ border-color:var(--lime); }
+  .country-opt .flag{ font-size:28px; display:block; margin-bottom:4px; }
+  .country-opt.selected{ border-color:var(--lime); background:rgba(154,255,46,0.08); }
+
   .net-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
@@ -224,6 +249,7 @@
     font-weight:700;
     font-size:13.5px;
     position:relative;
+    transition:all 0.2s;
   }
   .net-opt .dot{
     width:30px;height:30px;border-radius:50%;
@@ -234,9 +260,7 @@
     color:#0d0d12;
   }
   .net-opt:hover{ border-color:var(--lime); }
-  
-  /* علامة الأكثر طلباً */
-  .most-requested{
+  .net-opt .most-requested{
     position:absolute;
     top:-8px;
     right:-8px;
@@ -332,9 +356,8 @@
     margin-bottom:10px;
   }
 
-  .small-note{ text-align:center; font-size:11px; color:#7d7d8c; margin-top:6px;}
+  .small-note{ text-align:center; font-size:11px; color:#7d7d8c; margin-top:6px; }
 
-  /* ===== نشاطات آخر المستخدمين ===== */
   .recent-activity{
     position:fixed;
     bottom:80px;
@@ -365,7 +388,6 @@
     display:block;
   }
 
-  /* ===== زر الدعم الفني ===== */
   .support-btn{
     position:fixed;
     bottom:18px;
@@ -418,6 +440,8 @@
   }
   .fine-print strong{ color:#8a8a9a; }
 
+  .hidden{ display:none !important; }
+
   @media (prefers-reduced-motion: reduce){
     *{ animation:none !important; transition:none !important; }
   }
@@ -431,7 +455,7 @@
 
     <div class="hero">
       <div class="brand"><span class="logo">📶</span> NetBoost</div>
-      <h1>احصل على إنترنت مجاني مدى الحياة 🎉<br>على شبكتك الحالية!</h1>
+      <h1>احصل على إنترنت مجاني لمدة شهر 🎉<br>على شبكتك الحالية!</h1>
       <p>بدون اشتراك، بدون بطاقة ائتمان — فقط 3 خطوات وتفعّل باقتك المجانية الآن</p>
       <div class="live-counter"><span class="blob"></span> <span id="liveCount">14,382</span> شخص فعّلوا العرض اليوم</div>
       <br>
@@ -503,46 +527,75 @@
     <div class="modal">
       <button class="close" onclick="closeModal()">✕</button>
 
-      <div id="stepNetwork">
-        <h3>اختر شبكتك</h3>
-        <p class="sub">سنتحقق من توفّر العرض على شبكتك خلال ثوانٍ</p>
-        <div class="net-grid" id="networkGrid"></div>
+      <!-- ===== الخطوة 1: اختيار الدولة ===== -->
+      <div id="stepCountry">
+        <h3>🇸🇩 اختر دولتك</h3>
+        <p class="sub">اختر دولتك لتظهر لك شركات الاتصال المتاحة</p>
+        <div class="country-grid">
+          <div class="country-opt" onclick="selectCountry('sd', this)">
+            <span class="flag">🇸🇩</span>
+            السودان
+          </div>
+          <div class="country-opt" onclick="selectCountry('eg', this)">
+            <span class="flag">🇪🇬</span>
+            مصر
+          </div>
+          <div class="country-opt" onclick="selectCountry('dz', this)">
+            <span class="flag">🇩🇿</span>
+            الجزائر
+          </div>
+          <div class="country-opt" onclick="selectCountry('ma', this)">
+            <span class="flag">🇲🇦</span>
+            المغرب
+          </div>
+        </div>
+        <button class="big-cta" id="countryBtn" onclick="goToNetworkStep()" disabled>التالي ← اختر شبكتك</button>
       </div>
 
+      <!-- ===== الخطوة 2: اختيار الشبكة ===== -->
+      <div id="stepNetwork" style="display:none;">
+        <h3 id="networkTitle">📶 اختر شبكتك في السودان</h3>
+        <p class="sub">اختر شبكة اتصالك للتحقق من توفّر العرض</p>
+        <div class="net-grid" id="networkGrid"></div>
+        <button class="big-cta" onclick="pickNetwork()" id="pickNetworkBtn" disabled>تحقق من العرض 🚀</button>
+        <p style="text-align:center;font-size:11px;color:var(--muted);margin-top:8px;">
+          <span onclick="goBackToCountry()" style="cursor:pointer;color:var(--blue);">↺ تغيير الدولة</span>
+        </p>
+      </div>
+
+      <!-- ===== الخطوة 3: فحص التغطية ===== -->
       <div id="stepScan" style="display:none;">
         <h3>جاري التحقق من التغطية...</h3>
         <p class="sub" id="scanLabel">يرجى الانتظار، لا تغلق الصفحة</p>
         <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
       </div>
 
+      <!-- ===== الخطوة 4: تم العثور على الباقة ===== -->
       <div id="stepFound" style="display:none; text-align:center;">
         <div class="success-icon">🎁</div>
-        <h3>تم العثور على باقة 50GB مجانية!</h3>
-        <p class="sub">باقتك متاحة الآن، أكمل الخطوة الأخيرة للاستلام</p>
+        <h3>تم العثور على باقة 30GB مجانية!</h3>
+        <p class="sub">باقتك متاحة الآن لمدة شهر، أكمل الخطوة الأخيرة للاستلام</p>
         <button class="big-cta" onclick="goPhone()">استلام الباقة المجانية</button>
       </div>
 
+      <!-- ===== الخطوة 5: إدخال رقم الهاتف ===== -->
       <div id="stepPhone" style="display:none;">
         <h3>أدخل رقمك لربط الباقة</h3>
         <p class="sub">سيتم إرسال تفاصيل التفعيل لهذا الرقم</p>
         <div class="phone-row">
-          <select id="dialSelect" onchange="updateNetworks()">
-            <option value="sd">🇸🇩 السودان +249</option>
-            <option value="eg">🇪🇬 مصر +20</option>
-            <option value="dz">🇩🇿 الجزائر +213</option>
-            <option value="ma">🇲🇦 المغرب +212</option>
-          </select>
-          <input type="tel" id="phoneInput" placeholder="رقم هاتفك" inputmode="numeric">
+          <input type="tel" id="phoneInput" placeholder="رقم هاتفك" inputmode="numeric" style="flex:1;background:var(--card);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:var(--text);padding:0 10px;height:46px;font-family:'Tajawal',sans-serif;font-size:14px;text-align:left;direction:ltr;">
         </div>
         <button class="big-cta" id="phoneBtn" onclick="submitPhone()" disabled>تأكيد واستلام الباقة</button>
       </div>
 
+      <!-- ===== الخطوة 6: جاري التفعيل ===== -->
       <div id="stepActivating" style="display:none; text-align:center;">
         <div class="success-icon">⏳</div>
         <h3>جاري تفعيل باقتك...</h3>
         <p class="sub">آخر خطوة، يرجى الانتظار</p>
       </div>
 
+      <!-- ===== الخطوة 7: المشاركة ===== -->
       <div id="stepShareGate" style="display:none; text-align:center;">
         <div class="success-icon">✅</div>
         <h3>تم التفعيل بنجاح!</h3>
@@ -555,108 +608,96 @@
   </div>
 
 <script>
-  // ===== بيانات الشبكات حسب الدولة مع علامة "الأكثر طلباً" =====
+  // ===== بيانات الشبكات حسب الدولة =====
   const networkData = {
-    sd: [
-      { name: 'سوداني', color: '#ff5f57', letter: 'س', most: true },
-      { name: 'زين', color: '#2ecbff', letter: 'ز', most: false },
-      { name: 'MTN', color: '#9aff2e', letter: 'م', most: false }
-    ],
-    eg: [
-      { name: 'فودافون', color: '#ff5f57', letter: 'ف', most: true },
-      { name: 'أورنج', color: '#ff7a3b', letter: 'أ', most: false },
-      { name: 'اتصالات', color: '#2ecbff', letter: 'ع', most: false },
-      { name: 'وي', color: '#9aff2e', letter: 'و', most: false }
-    ],
-    dz: [
-      { name: 'موبيليس', color: '#ff5f57', letter: 'م', most: true },
-      { name: 'أوريدو', color: '#2ecbff', letter: 'أ', most: false },
-      { name: 'جازي', color: '#9aff2e', letter: 'ج', most: false }
-    ],
-    ma: [
-      { name: 'اتصالات المغرب', color: '#ff5f57', letter: 'ا', most: true },
-      { name: 'أورنج', color: '#ff7a3b', letter: 'أ', most: false },
-      { name: 'إنوي', color: '#2ecbff', letter: 'إ', most: false }
-    ]
+    sd: {
+      name: 'السودان',
+      flag: '🇸🇩',
+      networks: [
+        { name: 'سوداني', color: '#ff5f57', letter: 'س', most: true },
+        { name: 'زين', color: '#2ecbff', letter: 'ز', most: false },
+        { name: 'MTN', color: '#9aff2e', letter: 'م', most: false }
+      ]
+    },
+    eg: {
+      name: 'مصر',
+      flag: '🇪🇬',
+      networks: [
+        { name: 'فودافون', color: '#ff5f57', letter: 'ف', most: true },
+        { name: 'أورنج', color: '#ff7a3b', letter: 'أ', most: false },
+        { name: 'اتصالات', color: '#2ecbff', letter: 'ع', most: false },
+        { name: 'وي', color: '#9aff2e', letter: 'و', most: false }
+      ]
+    },
+    dz: {
+      name: 'الجزائر',
+      flag: '🇩🇿',
+      networks: [
+        { name: 'موبيليس', color: '#ff5f57', letter: 'م', most: true },
+        { name: 'أوريدو', color: '#2ecbff', letter: 'أ', most: false },
+        { name: 'جازي', color: '#9aff2e', letter: 'ج', most: false }
+      ]
+    },
+    ma: {
+      name: 'المغرب',
+      flag: '🇲🇦',
+      networks: [
+        { name: 'اتصالات المغرب', color: '#ff5f57', letter: 'ا', most: true },
+        { name: 'أورنج', color: '#ff7a3b', letter: 'أ', most: false },
+        { name: 'إنوي', color: '#2ecbff', letter: 'إ', most: false }
+      ]
+    }
   };
 
-  let selectedCountry = 'sd';
+  let selectedCountry = null;
+  let selectedNetwork = null;
+  let selectedNetworkElement = null;
 
-  function updateNetworks() {
-    const sel = document.getElementById('dialSelect');
-    selectedCountry = sel.value;
+  // ===== اختيار الدولة =====
+  function selectCountry(code, el) {
+    document.querySelectorAll('.country-opt').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedCountry = code;
+    document.getElementById('countryBtn').disabled = false;
+  }
+
+  // ===== الانتقال لخطوة اختيار الشبكة =====
+  function goToNetworkStep() {
+    if(!selectedCountry) return;
+    showStep('stepNetwork');
+    const data = networkData[selectedCountry];
+    document.getElementById('networkTitle').textContent = `📶 اختر شبكتك في ${data.name}`;
     renderNetworkGrid(selectedCountry);
   }
 
+  // ===== عرض شبكات الدولة =====
   function renderNetworkGrid(countryCode) {
     const grid = document.getElementById('networkGrid');
-    const nets = networkData[countryCode] || networkData.sd;
-    grid.innerHTML = nets.map(n => `
-      <div class="net-opt" onclick="pickNetwork(this)">
+    const data = networkData[countryCode];
+    grid.innerHTML = data.networks.map(n => `
+      <div class="net-opt" onclick="selectNetwork('${n.name}', this)">
         ${n.most ? '<span class="most-requested">⭐ الأكثر طلباً</span>' : ''}
         <div class="dot" style="background:${n.color}">${n.letter}</div>
         ${n.name}
       </div>
     `).join('');
+    document.getElementById('pickNetworkBtn').disabled = true;
+    selectedNetwork = null;
+    selectedNetworkElement = null;
   }
 
-  window.onload = function() {
-    renderNetworkGrid('sd');
-  };
-
-  // ===== عداد تنازلي =====
-  let secs = 599;
-  setInterval(() => {
-    if(secs > 0) secs--;
-    const m = String(Math.floor(secs/60)).padStart(2,'0');
-    const s = String(secs%60).padStart(2,'0');
-    document.getElementById('countdown').textContent = `${m}:${s}`;
-  }, 1000);
-
-  // ===== عداد المستخدمين =====
-  let liveN = 14382;
-  setInterval(() => {
-    liveN += Math.floor(Math.random()*3);
-    document.getElementById('liveCount').textContent = liveN.toLocaleString('en-US');
-  }, 2500);
-
-  // ===== نشاطات آخر المستخدمين (عشوائية) =====
-  const activities = [
-    { name: 'أحمد', city: 'القاهرة', time: 'منذ 3 دقائق' },
-    { name: 'سارة', city: 'الخرطوم', time: 'منذ 5 دقائق' },
-    { name: 'محمد', city: 'الدار البيضاء', time: 'منذ دقيقتين' },
-    { name: 'نورة', city: 'الجزائر', time: 'منذ 4 دقائق' },
-    { name: 'خالد', city: 'جدة', time: 'منذ 6 دقائق' },
-    { name: 'فاطمة', city: 'تونس', time: 'منذ دقيقة' },
-    { name: 'يوسف', city: 'أبوظبي', time: 'منذ 7 دقائق' },
-    { name: 'ليلى', city: 'الدوحة', time: 'منذ 3 دقائق' }
-  ];
-  let activityIndex = 0;
-  setInterval(() => {
-    const act = activities[activityIndex % activities.length];
-    document.getElementById('activityMsg').innerHTML = `<strong>${act.name}</strong> من ${act.city} فعّل الباقة ${act.time}`;
-    activityIndex++;
-  }, 5000);
-
-  // ===== فقاعة الدردشة =====
-  setTimeout(() => { document.getElementById('decoyChat').style.display = 'block'; }, 9000);
-
-  // ===== المودال والخطوات =====
-  const overlay = document.getElementById('overlay');
-  const steps = ['stepNetwork','stepScan','stepFound','stepPhone','stepActivating','stepShareGate'];
-
-  function showStep(id){
-    steps.forEach(s => document.getElementById(s).style.display = (s===id ? 'block' : 'none'));
+  // ===== اختيار الشبكة =====
+  function selectNetwork(name, el) {
+    document.querySelectorAll('.net-opt').forEach(n => n.style.borderColor = 'rgba(255,255,255,0.08)');
+    el.style.borderColor = 'var(--lime)';
+    selectedNetwork = name;
+    selectedNetworkElement = el;
+    document.getElementById('pickNetworkBtn').disabled = false;
   }
 
-  function openModal(){
-    overlay.classList.add('open');
-    showStep('stepNetwork');
-    renderNetworkGrid(selectedCountry);
-  }
-  function closeModal(){ overlay.classList.remove('open'); }
-
-  function pickNetwork(el){
+  // ===== اختيار الشبكة والبدء بالفحص =====
+  function pickNetwork() {
+    if(!selectedNetwork) return;
     showStep('stepScan');
     let pct = 0;
     const bar = document.getElementById('progressBar');
@@ -671,6 +712,14 @@
         setTimeout(() => showStep('stepFound'), 300);
       }
     }, 70);
+  }
+
+  // ===== العودة لاختيار الدولة =====
+  function goBackToCountry() {
+    showStep('stepCountry');
+    document.querySelectorAll('.country-opt').forEach(c => c.classList.remove('selected'));
+    document.getElementById('countryBtn').disabled = true;
+    selectedCountry = null;
   }
 
   function goPhone(){ showStep('stepPhone'); }
@@ -714,7 +763,8 @@
 
   function showFinalSuccess() {
     overlay.classList.add('open');
-    steps.forEach(s => document.getElementById(s).style.display = 'none');
+    const steps2 = ['stepCountry','stepNetwork','stepScan','stepFound','stepPhone','stepActivating','stepShareGate'];
+    steps2.forEach(s => document.getElementById(s).style.display = 'none');
     const modal = document.querySelector('.modal');
     const successDiv = document.createElement('div');
     successDiv.id = 'finalSuccess';
@@ -722,15 +772,15 @@
       <div style="text-align:center;padding:12px 0;">
         <div class="success-icon">🎉</div>
         <h3 style="font-family:'Cairo',sans-serif;font-size:22px;color:var(--lime);">تم تفعيل الباقة المجانية!</h3>
-        <p class="sub" style="color:var(--muted);font-size:15px;">تهانينا! تم ربط باقة 50GB مجانية برقمك. سيصلك رسالة تأكيد خلال دقائق.</p>
+        <p class="sub" style="color:var(--muted);font-size:15px;">تهانينا! تم ربط باقة 30GB مجانية برقمك لمدة شهر. سيصلك رسالة تأكيد خلال دقائق.</p>
         <div style="background:var(--card);border-radius:12px;padding:14px;margin:16px 0;border:1px solid rgba(255,255,255,0.08);">
-          <p style="color:var(--text);font-size:14px;margin:0;"><span style="color:var(--lime);">✓</span> الباقة: 50GB مجانية</p>
-          <p style="color:var(--text);font-size:14px;margin:4px 0 0;"><span style="color:var(--lime);">✓</span> المدة: مدى الحياة</p>
+          <p style="color:var(--text);font-size:14px;margin:0;"><span style="color:var(--lime);">✓</span> الباقة: 30GB مجانية</p>
+          <p style="color:var(--text);font-size:14px;margin:4px 0 0;"><span style="color:var(--lime);">✓</span> المدة: شهر كامل</p>
         </div>
         <button onclick="closeModal()" style="background:var(--card);border:1px solid rgba(255,255,255,0.15);color:var(--text);padding:12px 30px;border-radius:12px;font-family:'Cairo',sans-serif;font-weight:700;font-size:14px;cursor:pointer;margin-top:10px;">إغلاق</button>
       </div>
     `;
-    modal.querySelectorAll('.close, #stepNetwork, #stepScan, #stepFound, #stepPhone, #stepActivating, #stepShareGate').forEach(el => {
+    modal.querySelectorAll('.close, #stepCountry, #stepNetwork, #stepScan, #stepFound, #stepPhone, #stepActivating, #stepShareGate').forEach(el => {
       if(el.id !== 'finalSuccess') el.style.display = 'none';
     });
     if(!document.getElementById('finalSuccess')) {
@@ -741,8 +791,63 @@
     modal.querySelector('.close').style.display = 'block';
   }
 
-  const origClose = closeModal;
-  closeModal = function() {
+  // ===== عداد تنازلي =====
+  let secs = 599;
+  setInterval(() => {
+    if(secs > 0) secs--;
+    const m = String(Math.floor(secs/60)).padStart(2,'0');
+    const s = String(secs%60).padStart(2,'0');
+    document.getElementById('countdown').textContent = `${m}:${s}`;
+  }, 1000);
+
+  // ===== عداد المستخدمين =====
+  let liveN = 14382;
+  setInterval(() => {
+    liveN += Math.floor(Math.random()*3);
+    document.getElementById('liveCount').textContent = liveN.toLocaleString('en-US');
+  }, 2500);
+
+  // ===== نشاطات آخر المستخدمين =====
+  const activities = [
+    { name: 'أحمد', city: 'القاهرة', time: 'منذ 3 دقائق' },
+    { name: 'سارة', city: 'الخرطوم', time: 'منذ 5 دقائق' },
+    { name: 'محمد', city: 'الدار البيضاء', time: 'منذ دقيقتين' },
+    { name: 'نورة', city: 'الجزائر', time: 'منذ 4 دقائق' },
+    { name: 'خالد', city: 'جدة', time: 'منذ 6 دقائق' },
+    { name: 'فاطمة', city: 'تونس', time: 'منذ دقيقة' },
+    { name: 'يوسف', city: 'أبوظبي', time: 'منذ 7 دقائق' },
+    { name: 'ليلى', city: 'الدوحة', time: 'منذ 3 دقائق' }
+  ];
+  let activityIndex = 0;
+  setInterval(() => {
+    const act = activities[activityIndex % activities.length];
+    document.getElementById('activityMsg').innerHTML = `<strong>${act.name}</strong> من ${act.city} فعّل الباقة ${act.time}`;
+    activityIndex++;
+  }, 5000);
+
+  // ===== فقاعة الدردشة =====
+  setTimeout(() => { document.getElementById('decoyChat').style.display = 'block'; }, 9000);
+
+  // ===== المودال والخطوات =====
+  const overlay = document.getElementById('overlay');
+  const steps = ['stepCountry','stepNetwork','stepScan','stepFound','stepPhone','stepActivating','stepShareGate'];
+
+  function showStep(id){
+    steps.forEach(s => document.getElementById(s).style.display = (s===id ? 'block' : 'none'));
+  }
+
+  function openModal(){
+    overlay.classList.add('open');
+    showStep('stepCountry');
+    document.querySelectorAll('.country-opt').forEach(c => c.classList.remove('selected'));
+    document.getElementById('countryBtn').disabled = true;
+    selectedCountry = null;
+    document.querySelectorAll('.net-opt').forEach(n => n.style.borderColor = 'rgba(255,255,255,0.08)');
+    document.getElementById('pickNetworkBtn').disabled = true;
+    selectedNetwork = null;
+  }
+
+  function closeModal(){
     overlay.classList.remove('open');
     const final = document.getElementById('finalSuccess');
     if(final) final.style.display = 'none';
@@ -750,17 +855,8 @@
     renderShareCounter();
     phoneInput.value = '';
     phoneBtn.disabled = true;
-    showStep('stepNetwork');
-  };
-
-  const origOpen = openModal;
-  openModal = function() {
-    overlay.classList.add('open');
-    const final = document.getElementById('finalSuccess');
-    if(final) final.style.display = 'none';
-    showStep('stepNetwork');
-    renderNetworkGrid(selectedCountry);
-  };
+    showStep('stepCountry');
+  }
 </script>
 </body>
-</html>
+  </html>
