@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نت بوس - إنترنت مجاني مدى الحياة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d0d12;
+    --pink:#ff2f8e;
+    --lime:#9aff2e;
+    --gold:#ffd23f;
+    --blue:#2ecbff;
+    --red:#ff3b3b;
+    --dark:#15151d;
+    --card:#1c1c26;
+    --text:#fff;
+    --muted:#b9b9c8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(900px 500px at 10% 0%, rgba(255,47,142,0.18), transparent 60%),
+      radial-gradient(900px 500px at 90% 10%, rgba(46,203,255,0.15), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Tajawal', sans-serif;
+    min-height:100vh;
+  }
+
+  .wrap{max-width:760px;margin:0 auto;padding:30px 18px 80px;}
+
+  .urgency-bar{
+    background: linear-gradient(90deg, var(--red), #ff7a3b);
+    text-align:center;
+    padding:9px 12px;
+    font-weight:800;
+    font-size:13.5px;
+    animation: pulse-bg 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse-bg{ 0%,100%{filter:brightness(1)} 50%{filter:brightness(1.18)} }
+
+  .hero{
+    text-align:center;
+    padding:30px 0 20px;
+  }
+  .brand{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:'Cairo',sans-serif;
+    font-weight:900;
+    font-size:22px;
+    margin-bottom:18px;
+  }
+  .brand .logo{
+    width:36px;height:36px;border-radius:9px;
+    background:linear-gradient(135deg,var(--lime),var(--blue));
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;
+  }
+
+  .hero h1{
+    font-family:'Cairo',sans-serif;
+    font-weight:900;
+    font-size:clamp(26px,6vw,40px);
+    line-height:1.3;
+    margin:0 0 12px;
+    background:linear-gradient(90deg,var(--lime),var(--gold));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero p{ color:var(--muted); font-size:15px; margin:0 0 18px;}
+
+  .live-counter{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:rgba(154,255,46,0.12);
+    border:1px solid rgba(154,255,46,0.4);
+    color:var(--lime);
+    padding:7px 16px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:24px;
+  }
+  .live-counter .blob{
+    width:8px;height:8px;border-radius:50%;background:var(--lime);
+    box-shadow:0 0 0 4px rgba(154,255,46,0.25);
+  }
+
+  .cta-main{
+    display:block;
+    width:100%;
+    max-width:380px;
+    margin:0 auto 10px;
+    padding:18px;
+    border:none;
+    border-radius:14px;
+    background:linear-gradient(90deg,var(--lime),#5ee85c);
+    color:#0d0d12;
+    font-family:'Cairo',sans-serif;
+    font-weight:900;
+    font-size:18px;
+    cursor:pointer;
+    box-shadow:0 10px 28px rgba(154,255,46,0.25);
+    animation: bounce-btn 1.8s ease-in-out infinite;
+  }
+  @keyframes bounce-btn{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.035)} }
+  .cta-sub{
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    margin-bottom:6px;
+  }
+
+  .trust-row{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:10px;
+    margin:26px 0;
+  }
+  .trust-row span{
+    background:var(--card);
+    border:1px solid rgba(255,255,255,0.08);
+    padding:7px 14px;
+    border-radius:999px;
+    font-size:12px;
+    color:var(--muted);
+  }
+
+  .reviews{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:12px;
+    margin:30px 0;
+  }
+  .review-card{
+    background:var(--card);
+    border:1px solid rgba(255,255,255,0.07);
+    border-radius:12px;
+    padding:14px;
+  }
+  .review-card .top{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin-bottom:8px;
+  }
+  .review-card .avatar{
+    width:32px;height:32px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    font-size:12.5px;
+    color:#0d0d12;
+    flex-shrink:0;
+  }
+  .review-card .who-wrap{ flex:1; min-width:0; }
+  .review-card .name{ font-size:12.5px; font-weight:700; color:var(--text); }
+  .review-card .time{ font-size:10.5px; color:#7d7d8c; }
+  .review-card .stars{ color:var(--gold); font-size:12px; margin-bottom:6px;}
+  .review-card p{ font-size:12.5px; color:var(--muted); margin:0;}
+
+  .overlay{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,0.7);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:500;
+  }
+  .overlay.open{ display:flex; }
+  .modal{
+    background:var(--dark);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:18px;
+    max-width:420px;
+    width:100%;
+    padding:26px 22px;
+    position:relative;
+  }
+  .modal .close{
+    position:absolute; top:14px; left:14px;
+    background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;
+  }
+  .modal h3{
+    font-family:'Cairo',sans-serif;
+    font-size:19px;
+    margin:0 0 8px;
+    text-align:center;
+  }
+  .modal p.sub{
+    text-align:center;
+    color:var(--muted);
+    font-size:13px;
+    margin:0 0 20px;
+  }
+
+  .net-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-bottom:8px;
+  }
+  .net-opt{
+    background:var(--card);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:12px;
+    padding:14px 8px;
+    text-align:center;
+    cursor:pointer;
+    color:var(--text);
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+    font-size:13.5px;
+    position:relative;
+  }
+  .net-opt .dot{
+    width:30px;height:30px;border-radius:50%;
+    margin:0 auto 8px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;
+    font-weight:900;
+    color:#0d0d12;
+  }
+  .net-opt:hover{ border-color:var(--lime); }
+  
+  /* علامة الأكثر طلباً */
+  .most-requested{
+    position:absolute;
+    top:-8px;
+    right:-8px;
+    background:var(--gold);
+    color:#0d0d12;
+    font-size:9px;
+    font-weight:900;
+    padding:2px 8px;
+    border-radius:999px;
+    font-family:'Cairo',sans-serif;
+    box-shadow:0 2px 12px rgba(255,210,63,0.4);
+    letter-spacing:0.3px;
+  }
+
+  .progress-wrap{
+    background:#0d0d12;
+    border-radius:999px;
+    height:10px;
+    overflow:hidden;
+    margin:18px 0 10px;
+  }
+  .progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,var(--blue),var(--lime));
+    transition:width .25s linear;
+  }
+  .progress-label{ text-align:center; font-size:12.5px; color:var(--muted); }
+
+  .phone-row{
+    display:flex; gap:8px; margin-bottom:14px;
+  }
+  .phone-row select, .phone-row input{
+    background:var(--card);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:10px;
+    color:var(--text);
+    padding:0 10px;
+    height:46px;
+    font-family:'Tajawal',sans-serif;
+    font-size:14px;
+  }
+  .phone-row select{ width:90px; }
+  .phone-row input{ flex:1; min-width:0; direction:ltr; text-align:left;}
+
+  .big-cta{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(90deg,var(--lime),#5ee85c);
+    color:#0d0d12;
+    font-family:'Cairo',sans-serif;
+    font-weight:900;
+    font-size:15.5px;
+    cursor:pointer;
+  }
+  .big-cta:disabled{ opacity:0.5; cursor:not-allowed; }
+
+  .success-icon{
+    width:56px;height:56px;
+    border-radius:50%;
+    background:rgba(154,255,46,0.15);
+    color:var(--lime);
+    display:flex;align-items:center;justify-content:center;
+    font-size:28px;
+    margin:0 auto 14px;
+  }
+
+  .share-counter{
+    display:flex;
+    justify-content:center;
+    gap:6px;
+    margin:14px 0;
+  }
+  .share-counter .pip{
+    width:30px;height:8px;border-radius:999px;
+    background:rgba(255,255,255,0.12);
+  }
+  .share-counter .pip.filled{ background:var(--lime); }
+
+  .share-btn{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(90deg,#25d366,#1ebd5a);
+    color:#fff;
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    font-size:14.5px;
+    cursor:pointer;
+    margin-bottom:10px;
+  }
+
+  .small-note{ text-align:center; font-size:11px; color:#7d7d8c; margin-top:6px;}
+
+  /* ===== نشاطات آخر المستخدمين ===== */
+  .recent-activity{
+    position:fixed;
+    bottom:80px;
+    left:18px;
+    z-index:300;
+    background:var(--card);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:12px;
+    padding:12px 16px;
+    max-width:240px;
+    box-shadow:0 8px 28px rgba(0,0,0,0.5);
+    animation: slide-in 0.5s ease;
+    border-right:3px solid var(--lime);
+  }
+  .recent-activity .msg{
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.6;
+  }
+  .recent-activity .msg strong{
+    color:var(--text);
+    font-weight:700;
+  }
+  .recent-activity .time-label{
+    font-size:9px;
+    color:#5f5f6c;
+    margin-top:4px;
+    display:block;
+  }
+
+  /* ===== زر الدعم الفني ===== */
+  .support-btn{
+    position:fixed;
+    bottom:18px;
+    right:18px;
+    z-index:300;
+    background:#25d366;
+    color:#fff;
+    border:none;
+    border-radius:50px;
+    padding:10px 18px;
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    font-size:13px;
+    cursor:pointer;
+    box-shadow:0 4px 16px rgba(37,211,102,0.35);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    animation: pulse-support 2s ease-in-out infinite;
+  }
+  @keyframes pulse-support{ 0%,100%{box-shadow:0 4px 16px rgba(37,211,102,0.35);} 50%{box-shadow:0 4px 28px rgba(37,211,102,0.6);} }
+  .support-btn:hover{ transform:scale(1.04); }
+
+  .decoy.chat{
+    position:fixed;
+    bottom:18px;
+    right:78px;
+    z-index:300;
+    background:var(--card);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:12px;
+    padding:12px 14px;
+    max-width:200px;
+    font-size:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+    animation: slide-in .4s ease;
+  }
+  @keyframes slide-in{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);} }
+  .decoy .x{
+    position:absolute; top:4px; left:6px;
+    background:none;border:none;color:var(--muted);cursor:pointer;font-size:11px;
+  }
+
+  .fine-print{
+    text-align:center;
+    color:#5f5f6c;
+    font-size:10.5px;
+    margin-top:30px;
+    line-height:1.8;
+  }
+  .fine-print strong{ color:#8a8a9a; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="urgency-bar">⚡ العرض ينتهي خلال <span id="countdown">09:59</span> — تبقّى عدد محدود من التفعيلات اليوم!</div>
+
+  <div class="wrap">
+
+    <div class="hero">
+      <div class="brand"><span class="logo">📶</span> NetBoost</div>
+      <h1>احصل على إنترنت مجاني مدى الحياة 🎉<br>على شبكتك الحالية!</h1>
+      <p>بدون اشتراك، بدون بطاقة ائتمان — فقط 3 خطوات وتفعّل باقتك المجانية الآن</p>
+      <div class="live-counter"><span class="blob"></span> <span id="liveCount">14,382</span> شخص فعّلوا العرض اليوم</div>
+      <br>
+      <button class="cta-main" onclick="openModal()">🚀 فعّل إنترنتي المجاني الآن</button>
+      <p class="cta-sub">100% مجاني · يعمل مع جميع الشبكات</p>
+    </div>
+
+    <div class="trust-row">
+      <span>🔒 اتصال آمن SSL</span>
+      <span>✅ متوافق مع كل الشبكات</span>
+      <span>⭐ تقييم 4.9 من 5</span>
+      <span>👥 +2 مليون مستخدم</span>
+    </div>
+
+    <div class="reviews">
+      <div class="review-card">
+        <div class="top">
+          <div class="avatar" style="background:#ffb43b">ع.م</div>
+          <div class="who-wrap"><div class="name">عبدالله، الرياض</div><div class="time">منذ 12 دقيقة</div></div>
+        </div>
+        <div class="stars">★★★★★</div>
+        <p>فعّلت العرض قبل شوي وصارت سرعة النت عندي ممتازة، الحمدلله</p>
+      </div>
+      <div class="review-card">
+        <div class="top">
+          <div class="avatar" style="background:#7dd3fc">س.خ</div>
+          <div class="who-wrap"><div class="name">سارة خ.</div><div class="time">منذ 34 دقيقة</div></div>
+        </div>
+        <div class="stars">★★★★★</div>
+        <p>شاركت الرابط مع جروب العائلة وكلنا فعّلنا بنجاح</p>
+      </div>
+      <div class="review-card">
+        <div class="top">
+          <div class="avatar" style="background:#c4b5fd">م.ا</div>
+          <div class="who-wrap"><div class="name">محمد العتيبي</div><div class="time">منذ ساعة</div></div>
+        </div>
+        <div class="stars">★★★★★</div>
+        <p>ما توقعت العرض حقيقي بس جربته وفعلاً اشتغل معي</p>
+      </div>
+    </div>
+
+    <p class="fine-print">
+      <strong>نت بوس © 2026</strong> — خدمة معتمدة من كبرى شركات الاتصال العالمية. جميع الحقوق محفوظة.
+    </p>
+  </div>
+
+  <!-- ===== نشاطات آخر المستخدمين ===== -->
+  <div class="recent-activity" id="recentActivity">
+    <div class="msg" id="activityMsg">
+      <strong>أحمد</strong> من القاهرة فعّل الباقة منذ 3 دقائق
+    </div>
+    <span class="time-label">🟢 نشط الآن</span>
+  </div>
+
+  <!-- ===== زر الدعم الفني ===== -->
+  <button class="support-btn" onclick="alert('📞 يتم توجيهك إلى الدعم الفني ...')">
+    💬 دعم فني 24/7
+  </button>
+
+  <!-- ===== فقاعة دردشة وهمية ===== -->
+  <div class="decoy chat" id="decoyChat" style="display:none;">
+    <button class="x" onclick="this.parentElement.style.display='none'">✕</button>
+    <strong style="color:var(--blue);display:block;margin-bottom:4px;">💬 محمد</strong>
+    فعّلت العرض الحين وشغال 100%! جربه بسرعة قبل ينتهي
+  </div>
+
+  <!-- ===== المودال ===== -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <button class="close" onclick="closeModal()">✕</button>
+
+      <div id="stepNetwork">
+        <h3>اختر شبكتك</h3>
+        <p class="sub">سنتحقق من توفّر العرض على شبكتك خلال ثوانٍ</p>
+        <div class="net-grid" id="networkGrid"></div>
+      </div>
+
+      <div id="stepScan" style="display:none;">
+        <h3>جاري التحقق من التغطية...</h3>
+        <p class="sub" id="scanLabel">يرجى الانتظار، لا تغلق الصفحة</p>
+        <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+      </div>
+
+      <div id="stepFound" style="display:none; text-align:center;">
+        <div class="success-icon">🎁</div>
+        <h3>تم العثور على باقة 50GB مجانية!</h3>
+        <p class="sub">باقتك متاحة الآن، أكمل الخطوة الأخيرة للاستلام</p>
+        <button class="big-cta" onclick="goPhone()">استلام الباقة المجانية</button>
+      </div>
+
+      <div id="stepPhone" style="display:none;">
+        <h3>أدخل رقمك لربط الباقة</h3>
+        <p class="sub">سيتم إرسال تفاصيل التفعيل لهذا الرقم</p>
+        <div class="phone-row">
+          <select id="dialSelect" onchange="updateNetworks()">
+            <option value="sd">🇸🇩 السودان +249</option>
+            <option value="eg">🇪🇬 مصر +20</option>
+            <option value="dz">🇩🇿 الجزائر +213</option>
+            <option value="ma">🇲🇦 المغرب +212</option>
+          </select>
+          <input type="tel" id="phoneInput" placeholder="رقم هاتفك" inputmode="numeric">
+        </div>
+        <button class="big-cta" id="phoneBtn" onclick="submitPhone()" disabled>تأكيد واستلام الباقة</button>
+      </div>
+
+      <div id="stepActivating" style="display:none; text-align:center;">
+        <div class="success-icon">⏳</div>
+        <h3>جاري تفعيل باقتك...</h3>
+        <p class="sub">آخر خطوة، يرجى الانتظار</p>
+      </div>
+
+      <div id="stepShareGate" style="display:none; text-align:center;">
+        <div class="success-icon">✅</div>
+        <h3>تم التفعيل بنجاح!</h3>
+        <p class="sub">خطوة أخيرة <b>إلزامية</b> لتأكيد الباقة: شارك الرابط في 5 مجموعات واتساب</p>
+        <div class="share-counter" id="shareCounter"></div>
+        <button class="share-btn" onclick="fakeShare()">📲 مشاركة في مجموعة واتساب</button>
+        <p class="small-note" id="shareNote">0 من 5 مجموعات</p>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // ===== بيانات الشبكات حسب الدولة مع علامة "الأكثر طلباً" =====
+  const networkData = {
+    sd: [
+      { name: 'سوداني', color: '#ff5f57', letter: 'س', most: true },
+      { name: 'زين', color: '#2ecbff', letter: 'ز', most: false },
+      { name: 'MTN', color: '#9aff2e', letter: 'م', most: false }
+    ],
+    eg: [
+      { name: 'فودافون', color: '#ff5f57', letter: 'ف', most: true },
+      { name: 'أورنج', color: '#ff7a3b', letter: 'أ', most: false },
+      { name: 'اتصالات', color: '#2ecbff', letter: 'ع', most: false },
+      { name: 'وي', color: '#9aff2e', letter: 'و', most: false }
+    ],
+    dz: [
+      { name: 'موبيليس', color: '#ff5f57', letter: 'م', most: true },
+      { name: 'أوريدو', color: '#2ecbff', letter: 'أ', most: false },
+      { name: 'جازي', color: '#9aff2e', letter: 'ج', most: false }
+    ],
+    ma: [
+      { name: 'اتصالات المغرب', color: '#ff5f57', letter: 'ا', most: true },
+      { name: 'أورنج', color: '#ff7a3b', letter: 'أ', most: false },
+      { name: 'إنوي', color: '#2ecbff', letter: 'إ', most: false }
+    ]
+  };
+
+  let selectedCountry = 'sd';
+
+  function updateNetworks() {
+    const sel = document.getElementById('dialSelect');
+    selectedCountry = sel.value;
+    renderNetworkGrid(selectedCountry);
+  }
+
+  function renderNetworkGrid(countryCode) {
+    const grid = document.getElementById('networkGrid');
+    const nets = networkData[countryCode] || networkData.sd;
+    grid.innerHTML = nets.map(n => `
+      <div class="net-opt" onclick="pickNetwork(this)">
+        ${n.most ? '<span class="most-requested">⭐ الأكثر طلباً</span>' : ''}
+        <div class="dot" style="background:${n.color}">${n.letter}</div>
+        ${n.name}
+      </div>
+    `).join('');
+  }
+
+  window.onload = function() {
+    renderNetworkGrid('sd');
+  };
+
+  // ===== عداد تنازلي =====
+  let secs = 599;
+  setInterval(() => {
+    if(secs > 0) secs--;
+    const m = String(Math.floor(secs/60)).padStart(2,'0');
+    const s = String(secs%60).padStart(2,'0');
+    document.getElementById('countdown').textContent = `${m}:${s}`;
+  }, 1000);
+
+  // ===== عداد المستخدمين =====
+  let liveN = 14382;
+  setInterval(() => {
+    liveN += Math.floor(Math.random()*3);
+    document.getElementById('liveCount').textContent = liveN.toLocaleString('en-US');
+  }, 2500);
+
+  // ===== نشاطات آخر المستخدمين (عشوائية) =====
+  const activities = [
+    { name: 'أحمد', city: 'القاهرة', time: 'منذ 3 دقائق' },
+    { name: 'سارة', city: 'الخرطوم', time: 'منذ 5 دقائق' },
+    { name: 'محمد', city: 'الدار البيضاء', time: 'منذ دقيقتين' },
+    { name: 'نورة', city: 'الجزائر', time: 'منذ 4 دقائق' },
+    { name: 'خالد', city: 'جدة', time: 'منذ 6 دقائق' },
+    { name: 'فاطمة', city: 'تونس', time: 'منذ دقيقة' },
+    { name: 'يوسف', city: 'أبوظبي', time: 'منذ 7 دقائق' },
+    { name: 'ليلى', city: 'الدوحة', time: 'منذ 3 دقائق' }
+  ];
+  let activityIndex = 0;
+  setInterval(() => {
+    const act = activities[activityIndex % activities.length];
+    document.getElementById('activityMsg').innerHTML = `<strong>${act.name}</strong> من ${act.city} فعّل الباقة ${act.time}`;
+    activityIndex++;
+  }, 5000);
+
+  // ===== فقاعة الدردشة =====
+  setTimeout(() => { document.getElementById('decoyChat').style.display = 'block'; }, 9000);
+
+  // ===== المودال والخطوات =====
+  const overlay = document.getElementById('overlay');
+  const steps = ['stepNetwork','stepScan','stepFound','stepPhone','stepActivating','stepShareGate'];
+
+  function showStep(id){
+    steps.forEach(s => document.getElementById(s).style.display = (s===id ? 'block' : 'none'));
+  }
+
+  function openModal(){
+    overlay.classList.add('open');
+    showStep('stepNetwork');
+    renderNetworkGrid(selectedCountry);
+  }
+  function closeModal(){ overlay.classList.remove('open'); }
+
+  function pickNetwork(el){
+    showStep('stepScan');
+    let pct = 0;
+    const bar = document.getElementById('progressBar');
+    const label = document.getElementById('scanLabel');
+    const labels = ['جاري الاتصال بالخادم...', 'جاري التحقق من التغطية...', 'جاري تأكيد الباقة المتاحة...'];
+    const timer = setInterval(() => {
+      pct += 4;
+      bar.style.width = Math.min(pct,100) + '%';
+      label.textContent = labels[Math.floor(pct/34)] || labels[labels.length-1];
+      if(pct >= 100){
+        clearInterval(timer);
+        setTimeout(() => showStep('stepFound'), 300);
+      }
+    }, 70);
+  }
+
+  function goPhone(){ showStep('stepPhone'); }
+
+  const phoneInput = document.getElementById('phoneInput');
+  const phoneBtn = document.getElementById('phoneBtn');
+  phoneInput.addEventListener('input', () => {
+    phoneBtn.disabled = phoneInput.value.trim().length < 6;
+  });
+
+  function submitPhone(){
+    showStep('stepActivating');
+    setTimeout(() => {
+      showStep('stepShareGate');
+      renderShareCounter();
+    }, 1800);
+  }
+
+  let shares = 0;
+  function renderShareCounter(){
+    const c = document.getElementById('shareCounter');
+    c.innerHTML = '';
+    for(let i=0;i<5;i++){
+      const pip = document.createElement('div');
+      pip.className = 'pip' + (i < shares ? ' filled' : '');
+      c.appendChild(pip);
+    }
+    document.getElementById('shareNote').textContent = `${shares} من 5 مجموعات`;
+  }
+
+  function fakeShare(){
+    shares++;
+    renderShareCounter();
+    if(shares >= 5){
+      setTimeout(() => {
+        closeModal();
+        showFinalSuccess();
+      }, 700);
+    }
+  }
+
+  function showFinalSuccess() {
+    overlay.classList.add('open');
+    steps.forEach(s => document.getElementById(s).style.display = 'none');
+    const modal = document.querySelector('.modal');
+    const successDiv = document.createElement('div');
+    successDiv.id = 'finalSuccess';
+    successDiv.innerHTML = `
+      <div style="text-align:center;padding:12px 0;">
+        <div class="success-icon">🎉</div>
+        <h3 style="font-family:'Cairo',sans-serif;font-size:22px;color:var(--lime);">تم تفعيل الباقة المجانية!</h3>
+        <p class="sub" style="color:var(--muted);font-size:15px;">تهانينا! تم ربط باقة 50GB مجانية برقمك. سيصلك رسالة تأكيد خلال دقائق.</p>
+        <div style="background:var(--card);border-radius:12px;padding:14px;margin:16px 0;border:1px solid rgba(255,255,255,0.08);">
+          <p style="color:var(--text);font-size:14px;margin:0;"><span style="color:var(--lime);">✓</span> الباقة: 50GB مجانية</p>
+          <p style="color:var(--text);font-size:14px;margin:4px 0 0;"><span style="color:var(--lime);">✓</span> المدة: مدى الحياة</p>
+        </div>
+        <button onclick="closeModal()" style="background:var(--card);border:1px solid rgba(255,255,255,0.15);color:var(--text);padding:12px 30px;border-radius:12px;font-family:'Cairo',sans-serif;font-weight:700;font-size:14px;cursor:pointer;margin-top:10px;">إغلاق</button>
+      </div>
+    `;
+    modal.querySelectorAll('.close, #stepNetwork, #stepScan, #stepFound, #stepPhone, #stepActivating, #stepShareGate').forEach(el => {
+      if(el.id !== 'finalSuccess') el.style.display = 'none';
+    });
+    if(!document.getElementById('finalSuccess')) {
+      modal.appendChild(successDiv);
+    } else {
+      document.getElementById('finalSuccess').style.display = 'block';
+    }
+    modal.querySelector('.close').style.display = 'block';
+  }
+
+  const origClose = closeModal;
+  closeModal = function() {
+    overlay.classList.remove('open');
+    const final = document.getElementById('finalSuccess');
+    if(final) final.style.display = 'none';
+    shares = 0;
+    renderShareCounter();
+    phoneInput.value = '';
+    phoneBtn.disabled = true;
+    showStep('stepNetwork');
+  };
+
+  const origOpen = openModal;
+  openModal = function() {
+    overlay.classList.add('open');
+    const final = document.getElementById('finalSuccess');
+    if(final) final.style.display = 'none';
+    showStep('stepNetwork');
+    renderNetworkGrid(selectedCountry);
+  };
+</script>
+</body>
+</html>
